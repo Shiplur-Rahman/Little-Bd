@@ -10,8 +10,7 @@ const products = [
     unit: "1 lb · Bone-in",
     price: 12.99,
     badge: "PICKED FOR YOU",
-    image:
-      "https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?auto=format&fit=crop&w=700&q=80",
+    image: "photos/goat%20curry%20cut.jpg",
   },
   {
     id: "goat-shoulder-chops",
@@ -20,8 +19,7 @@ const products = [
     unit: "1 lb · Perfect for grilling",
     price: 14.49,
     badge: "BUTCHER’S PICK",
-    image:
-      "https://images.unsplash.com/photo-1603048297172-c92544798d5a?auto=format&fit=crop&w=700&q=80",
+    image: "photos/goat%20shoulder%20chop.jpg",
   },
   {
     id: "boneless-goat",
@@ -30,9 +28,8 @@ const products = [
     unit: "1 lb · Ready for the pot",
     price: 15.99,
     badge: "READY TO COOK",
-    image:
-      "https://images.unsplash.com/photo-1602470520998-f4a52199a3d6?auto=format&fit=crop&w=700&q=80",
-  },
+    image: "photos/goat%20boneless%20cubes.jpg",
+  }
   {
     id: "beef-stew-meat",
     name: "Beef stew meat",
@@ -40,8 +37,7 @@ const products = [
     unit: "1 lb · Cut into hearty cubes",
     price: 9.99,
     badge: "SLOW COOK FAVORITE",
-    image:
-      "https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?auto=format&fit=crop&w=700&q=80",
+    image: "photos/beef-stew-meat.avif",
   },
   {
     id: "ground-beef",
@@ -50,8 +46,7 @@ const products = [
     unit: "1 lb · Weeknight ready",
     price: 8.49,
     badge: "WEEKDAY FAVORITE",
-    image:
-      "https://images.unsplash.com/photo-1603048297172-c92544798d5a?auto=format&fit=crop&w=700&q=80",
+    image: "photos/Halal%20Ground%20Beef.jpg",
   },
   {
     id: "chicken-drumsticks",
@@ -60,28 +55,7 @@ const products = [
     unit: "1 lb · Family pack",
     price: 4.99,
     badge: "FAMILY FAVORITE",
-    image:
-      "https://images.unsplash.com/photo-1604503468506-a8da13d82791?auto=format&fit=crop&w=700&q=80",
-  },
-  {
-    id: "beef-jerky",
-    name: "Peppered beef jerky",
-    category: "Snacks",
-    unit: "3 oz · Savory & satisfying",
-    price: 7.99,
-    badge: "SNACK TIME",
-    image:
-      "https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?auto=format&fit=crop&w=700&q=80",
-  },
-  {
-    id: "meat-snack-sticks",
-    name: "Smoky meat snack sticks",
-    category: "Snacks",
-    unit: "4 ct · Grab-and-go",
-    price: 6.49,
-    badge: "GRAB & GO",
-    image:
-      "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=700&q=80",
+    image: "photos/halal%20chicken%20drumpstick.webp",
   },
 ];
 
@@ -312,6 +286,15 @@ function showToast(message) {
 }
 
 function setCategory(category) {
+  if (!products.some((product) => product.category === category)) {
+    activeCategory = "";
+    searchQuery = "";
+    searchInput.value = "";
+    renderProducts();
+    showToast("More snacks are coming soon. Showing all available cuts.");
+    document.querySelector("#shop").scrollIntoView({ behavior: "smooth" });
+    return;
+  }
   activeCategory = category;
   renderProducts();
   document.querySelector("#shop").scrollIntoView({ behavior: "smooth" });
