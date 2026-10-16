@@ -2,6 +2,26 @@ const FREE_DELIVERY_THRESHOLD = 50;
 const CART_STORAGE_KEY = "hilltop-market-cart";
 const ZIP_STORAGE_KEY = "hilltop-market-zip";
 
+function safeStorageGet(key, fallback = null) {
+  try {
+    const value = localStorage.getItem(key);
+    return value === null ? fallback : value;
+  } catch (error) {
+    console.error(`Unable to read "${key}" from localStorage.`, error);
+    return fallback;
+  }
+}
+
+function safeStorageSet(key, value) {
+  try {
+    localStorage.setItem(key, value);
+    return true;
+  } catch (error) {
+    console.error(`Unable to write "${key}" to localStorage.`, error);
+    return false;
+  }
+}
+
 const products = [
   {
     id: "goat-curry-cuts",
@@ -29,7 +49,7 @@ const products = [
     price: 15.99,
     badge: "READY TO COOK",
     image: "photos/goat%20boneless%20cubes.jpg",
-  }
+  },
   {
     id: "beef-stew-meat",
     name: "Beef stew meat",
@@ -84,7 +104,7 @@ let toastTimeout;
 
 function loadCart() {
   try {
-    const savedCart = JSON.parse(localStorage.getItem(CART_STORAGE_KEY) || "{}");
+    const savedCart = JSON.parse(safeStorageGet(CART_STORAGE_KEY, "{}"));
     if (!savedCart || typeof savedCart !== "object" || Array.isArray(savedCart)) {
       return {};
     }
@@ -104,7 +124,10 @@ function loadCart() {
 
 function saveCart() {
   try {
-    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+    const saved = safeStorageSet(CART_STORAGE_KEY, JSON.stringify(cart));
+    if (!saved) {
+      showToast("Your cart couldn’t be saved on this device.");
+    }
   } catch (error) {
     console.error("Unable to save the cart.", error);
     showToast("Your cart couldn’t be saved on this device.");
@@ -409,7 +432,7 @@ document.querySelector("#account-button").addEventListener("click", () => {
 });
 
 document.querySelector("#delivery-link").addEventListener("click", () => {
-  const currentZip = localStorage.getItem(ZIP_STORAGE_KEY) || "";
+  const currentZip = safeStorageGet(ZIP_STORAGE_KEY, "") || "";
   const zip = window.prompt("Enter your ZIP code to set your delivery area:", currentZip);
   if (zip === null) {
     return;
@@ -419,17 +442,15 @@ document.querySelector("#delivery-link").addEventListener("click", () => {
     showToast("Please enter a valid 5-digit ZIP code.");
     return;
   }
-  try {
-    localStorage.setItem(ZIP_STORAGE_KEY, normalizedZip);
-    deliveryZip.textContent = normalizedZip;
-    showToast(`Delivery area set to ${normalizedZip}.`);
-  } catch (error) {
-    console.error("Unable to save the delivery area.", error);
+  if (!safeStorageSet(ZIP_STORAGE_KEY, normalizedZip)) {
     showToast("Your delivery area couldn’t be saved on this device.");
+    return;
   }
+  deliveryZip.textContent = normalizedZip;
+  showToast(`Delivery area set to ${normalizedZip}.`);
 });
 
-const savedZip = localStorage.getItem(ZIP_STORAGE_KEY);
+const savedZip = safeStorageGet(ZIP_STORAGE_KEY, "");
 if (savedZip && /^\d{5}$/.test(savedZip)) {
   deliveryZip.textContent = savedZip;
 }
