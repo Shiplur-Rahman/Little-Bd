@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">Hilltop Market icon</title>
+  <desc id="desc">A cream neighborhood market with a hill-shaped roof and a small golden sun on a deep evergreen background.</desc>
+  <rect width="512" height="512" rx="112" fill="#245647"/>
+  <circle cx="373" cy="131" r="31" fill="#e7b85f"/>
+  <path d="M91 244 256 111l165 133v31H91z" fill="#fbf6f1"/>
+  <path d="M125 239 256 136l131 103" fill="none" stroke="#a8323e" stroke-linecap="round" stroke-linejoin="round" stroke-width="18"/>
+  <path d="M113 249h286v153a24 24 0 0 1-24 24H137a24 24 0 0 1-24-24z" fill="#fbf6f1"/>
+  <path d="M113 239h286v29H113z" fill="#a8323e"/>
+  <path d="M113 239h58v29c0 17-12 28-29 28s-29-11-29-28zm115 0h58v29c0 17-12 28-29 28s-29-11-29-28zm115 0h58v29c0 17-12 28-29 28s-29-11-29-28z" fill="#f2d6d4"/>
+  <rect x="150" y="340" width="81" height="63" rx="8" fill="#f2d6d4"/>
+  <path d="M190 386c-18-5-21-21-14-32 16 1 25 12 14 32Zm1 0c1-18 13-26 26-23 4 15-7 26-26 23Zm-1 1v9" fill="none" stroke="#70232d" stroke-linecap="round" stroke-linejoin="round" stroke-width="7"/>
+  <path d="M258 349h68a12 12 0 0 1 12 12v65h-92v-65a12 12 0 0 1 12-12z" fill="#70232d"/>
+  <circle cx="319" cy="394" r="5" fill="#e7b85f"/>
+</svg>
