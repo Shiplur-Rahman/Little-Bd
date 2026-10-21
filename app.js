@@ -1,6 +1,7 @@
-const FREE_DELIVERY_THRESHOLD = 50;
+const FREE_DELIVERY_THRESHOLD = 150;
 const CART_STORAGE_KEY = "hilltop-market-cart";
 const ZIP_STORAGE_KEY = "hilltop-market-zip";
+const LOCATION_STORAGE_KEY = "hilltop-market-location";
 
 function safeStorageGet(key, fallback = null) {
   try {
@@ -96,6 +97,8 @@ const sortSelect = document.querySelector("#sort-products");
 const clearFilterButton = document.querySelector("#clear-filter");
 const toast = document.querySelector("#toast");
 const deliveryZip = document.querySelector("#delivery-zip");
+const accountButton = document.querySelector("#account-button");
+const accountLabel = document.querySelector("#account-label");
 
 let activeCategory = "";
 let searchQuery = "";
@@ -139,6 +142,77 @@ function formatPrice(value) {
     style: "currency",
     currency: "USD",
   }).format(value);
+}
+
+function updateAccountUI(clerk) {
+  const user = clerk?.user;
+  const label = user?.firstName || user?.primaryEmailAddress?.emailAddress || "Account";
+  accountLabel.textContent = label;
+  accountButton.classList.toggle("logged-in", Boolean(user));
+  accountButton.setAttribute("aria-label", user ? `Account: ${label}` : "Account");
+}
+
+function setLocationLabel(label) {
+  if (!label) {
+    return;
+  }
+  deliveryZip.textContent = label;
+  safeStorageSet(LOCATION_STORAGE_KEY, JSON.stringify({ label }));
+}
+
+function resolveLocationFromCoords(latitude, longitude) {
+  fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Unable to load location metadata.");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      const locationLabel = data?.address?.city || data?.address?.town || data?.address?.suburb || data?.address?.village || "Current location";
+      setLocationLabel(locationLabel);
+      showToast(`Delivery area set to ${locationLabel}.`);
+    })
+    .catch(() => {
+      setLocationLabel("Current location");
+      showToast("Delivery area set from your GPS location.");
+    });
+}
+
+function animateLetteredHeadings() {
+  document.querySelectorAll("[data-animate-letters]").forEach((element) => {
+    if (element.dataset.letterized === "true") {
+      return;
+    }
+
+    const text = element.textContent.trim();
+    if (!text) {
+      return;
+    }
+
+    const fragments = Array.from(element.childNodes).filter((node) => node.nodeType === Node.ELEMENT_NODE && node.tagName === "SPAN");
+    const targets = fragments.length > 0 ? fragments : [element];
+
+    targets.forEach((target) => {
+      const targetText = target.textContent.trim();
+      if (!targetText) {
+        return;
+      }
+
+      const letters = [...targetText].map((char, index) => {
+        const letter = document.createElement("span");
+        letter.className = "letter";
+        letter.style.setProperty("--index", index);
+        letter.textContent = char === " " ? "\u00A0" : char;
+        return letter;
+      });
+
+      target.textContent = "";
+      letters.forEach((letter) => target.appendChild(letter));
+    });
+
+    element.dataset.letterized = "true";
+  });
 }
 
 function getProduct(id) {
@@ -428,30 +502,107 @@ document.querySelector("#checkout-button").addEventListener("click", () => {
 });
 
 document.querySelector("#account-button").addEventListener("click", () => {
-  showToast("Account sign-in can be connected when your store is ready.");
+  window.hilltopClerkReady
+    .then((clerk) => {
+      if (!clerk) {
+        showToast("Sign-in is not configured. Add the Clerk publishable key first.");
+        return;
+      }
+      if (clerk.isSignedIn) {
+        clerk.openUserProfile();
+        return;
+      }
+      window.location.href = "login.html";
+    })
+    .catch((error) => {
+      console.error("Unable to open account sign-in.", error);
+      showToast("Account sign-in is unavailable right now.");
+    });
 });
 
-document.querySelector("#delivery-link").addEventListener("click", () => {
-  const currentZip = safeStorageGet(ZIP_STORAGE_KEY, "") || "";
-  const zip = window.prompt("Enter your ZIP code to set your delivery area:", currentZip);
-  if (zip === null) {
+document.querySelector("#delivery-link").addEventListener("click", async () => {
+  let clerk;
+  try {
+    clerk = await window.hilltopClerkReady;
+  } catch (error) {
+    console.error("Unable to verify the current account.", error);
+    showToast("Delivery location is unavailable right now.");
     return;
   }
-  const normalizedZip = zip.trim();
-  if (!/^\d{5}$/.test(normalizedZip)) {
-    showToast("Please enter a valid 5-digit ZIP code.");
+
+  if (!clerk) {
+    showToast("Sign-in is not configured. Add the Clerk publishable key first.");
     return;
   }
-  if (!safeStorageSet(ZIP_STORAGE_KEY, normalizedZip)) {
-    showToast("Your delivery area couldn’t be saved on this device.");
+  if (!clerk.isSignedIn) {
+    window.location.href = "login.html";
     return;
   }
-  deliveryZip.textContent = normalizedZip;
-  showToast(`Delivery area set to ${normalizedZip}.`);
+
+  if (!navigator.geolocation) {
+    const currentZip = safeStorageGet(ZIP_STORAGE_KEY, "") || "";
+    const zip = window.prompt("Enter your ZIP code to set your delivery area:", currentZip);
+    if (zip === null) {
+      return;
+    }
+    const normalizedZip = zip.trim();
+    if (!/^\d{5}$/.test(normalizedZip)) {
+      showToast("Please enter a valid 5-digit ZIP code.");
+      return;
+    }
+    if (!safeStorageSet(ZIP_STORAGE_KEY, normalizedZip)) {
+      showToast("Your delivery area couldn’t be saved on this device.");
+      return;
+    }
+    deliveryZip.textContent = normalizedZip;
+    showToast(`Delivery area set to ${normalizedZip}.`);
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      resolveLocationFromCoords(position.coords.latitude, position.coords.longitude);
+    },
+    () => {
+      const currentZip = safeStorageGet(ZIP_STORAGE_KEY, "") || "";
+      const zip = window.prompt("Location access was denied. Enter your ZIP code instead:", currentZip);
+      if (zip === null) {
+        return;
+      }
+      const normalizedZip = zip.trim();
+      if (!/^\d{5}$/.test(normalizedZip)) {
+        showToast("Please enter a valid 5-digit ZIP code.");
+        return;
+      }
+      if (!safeStorageSet(ZIP_STORAGE_KEY, normalizedZip)) {
+        showToast("Your delivery area couldn’t be saved on this device.");
+        return;
+      }
+      deliveryZip.textContent = normalizedZip;
+      showToast(`Delivery area set to ${normalizedZip}.`);
+    },
+    {
+      enableHighAccuracy: true,
+      timeout: 10000,
+      maximumAge: 60000,
+    },
+  );
 });
+
+const savedLocation = safeStorageGet(LOCATION_STORAGE_KEY, "");
+if (savedLocation) {
+  try {
+    const parsedLocation = JSON.parse(savedLocation);
+    if (parsedLocation && parsedLocation.label) {
+      deliveryZip.textContent = parsedLocation.label;
+    }
+  } catch (error) {
+    console.error("Unable to parse saved delivery location.", error);
+  }
+}
 
 const savedZip = safeStorageGet(ZIP_STORAGE_KEY, "");
-if (savedZip && /^\d{5}$/.test(savedZip)) {
+if (savedZip && /^\d{5}$/.test(savedZip) && deliveryZip.textContent === "Your area") {
   deliveryZip.textContent = savedZip;
 }
 
@@ -469,5 +620,15 @@ mainNav.addEventListener("click", (event) => {
   }
 });
 
+window.hilltopClerkReady
+  .then((clerk) => {
+    if (clerk) {
+      updateAccountUI(clerk);
+    }
+  })
+  .catch((error) => {
+    console.error("Unable to initialize account status.", error);
+  });
+animateLetteredHeadings();
 renderProducts();
 renderCart();

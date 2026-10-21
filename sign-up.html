@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f7f7ef" />
+    <title>Create an account — Hilltop Market</title>
+    <link rel="icon" type="image/svg+xml" href="hilltop-market-icon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="clerk-config.js" defer></script>
+    <script src="clerk-loader.js" defer></script>
+    <script src="sign-up.js" defer></script>
+  </head>
+  <body class="login-page-body">
+    <div class="announcement">
+      <span class="announcement-spark" aria-hidden="true">✳</span>
+      <span>Fresh cuts and snacks, delivered with care. Free delivery over $150.</span>
+      <a href="index.html#shop">Shop now <span aria-hidden="true">→</span></a>
+    </div>
+
+    <header class="site-header login-header">
+      <div class="header-main page-shell login-header-main">
+        <a class="brand" href="index.html" aria-label="Hilltop Market home">
+          <span class="brand-mark" aria-hidden="true">
+            <img src="hilltop-market-icon.svg" alt="" />
+          </span>
+          <span class="brand-name">hilltop<span>market</span></span>
+        </a>
+        <a class="back-home-link" href="index.html">Back to shop</a>
+      </div>
+    </header>
+
+    <main class="login-shell page-shell">
+      <section class="login-panel" aria-labelledby="signup-title">
+        <div class="login-copy">
+          <p class="eyebrow"><span></span> JOIN YOUR NEIGHBORHOOD MARKET</p>
+          <h1 id="signup-title">A little closer to the good stuff.</h1>
+          <p>Create an account to save your favorites and make local delivery easier.</p>
+        </div>
+        <div class="login-card">
+          <p class="login-auth-status" id="signup-auth-status" role="status" aria-live="polite">
+            Loading secure sign-up…
+          </p>
+          <div id="clerk-sign-up"></div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

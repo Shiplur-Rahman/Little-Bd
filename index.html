@@ -17,12 +17,14 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
+    <script src="clerk-config.js" defer></script>
+    <script src="clerk-loader.js" defer></script>
     <script src="app.js" defer></script>
   </head>
   <body>
     <div class="announcement">
       <span class="announcement-spark" aria-hidden="true">✳</span>
-      <span>Fresh cuts and market snacks, delivered with care. Free delivery over $50.</span>
+      <span>Fresh cuts and snacks, delivered with care. Free delivery over $150.</span>
       <a href="#shop">Shop now <span aria-hidden="true">→</span></a>
     </div>
 
@@ -57,7 +59,7 @@
             id="product-search"
             name="q"
             type="search"
-            placeholder="Search cuts, snacks, and more"
+            placeholder="search"
             autocomplete="off"
           />
           <button type="submit">Search</button>
@@ -78,7 +80,7 @@
               <circle cx="12" cy="8" r="3.5" />
               <path d="M5 20c.8-3.4 3.2-5.2 7-5.2s6.2 1.8 7 5.2" />
             </svg>
-            <span>Account</span>
+            <span id="account-label">Account</span>
           </button>
           <button class="cart-button" id="cart-open" type="button" aria-label="Open cart">
             <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -107,7 +109,10 @@
       <section class="hero page-shell" aria-labelledby="hero-title">
         <div class="hero-content">
           <p class="eyebrow"><span></span> GOOD FOOD, CLOSE TO HOME</p>
-          <h1 id="hero-title">Quality cuts,<br />Direct to your Home</h1>
+          <h1 id="hero-title" class="hero-title" data-animate-letters>
+            <span>Quality cuts,</span>
+            <span>Direct to your Home</span>
+          </h1>
           <p class="hero-copy">
             Goat, beef, chicken, and butcher-shop favorites, picked with care and brought right to your door.
           </p>
@@ -129,7 +134,7 @@
         <div class="section-heading">
           <div>
             <p class="eyebrow">FROM OUR COUNTER</p>
-            <h2 id="category-title">Find your favorites</h2>
+            <h2 id="category-title" data-animate-letters>Find your favorites</h2>
           </div>
           <a class="text-link" href="#shop">Browse everything <span aria-hidden="true">→</span></a>
         </div>
@@ -174,7 +179,7 @@
         <div class="section-heading products-heading" id="weekly-picks">
           <div>
             <p class="eyebrow">FRESH CUTS & MARKET FAVORITES</p>
-            <h2 id="products-title">This week at the butcher’s</h2>
+            <h2 id="products-title" data-animate-letters>This week at the butcher’s</h2>
           </div>
           <div class="product-controls">
             <label class="sr-only" for="sort-products">Sort products</label>
@@ -200,7 +205,7 @@
       <section class="weekly-box page-shell" id="weekly-box">
         <div class="weekly-box-copy">
           <p class="eyebrow">MAKE MEALTIME EASY</p>
-          <h2>Your week,<br />in one good box.</h2>
+          <h2 data-animate-letters>Your week, in one good box.</h2>
           <p>Build a box of butcher-shop favorites for the week. Choose your cuts and we’ll get them ready.</p>
           <a class="button button-green" href="#shop">Pick your cuts <span aria-hidden="true">→</span></a>
         </div>
