@@ -146,10 +146,10 @@ function formatPrice(value) {
 
 function updateAccountUI(clerk) {
   const user = clerk?.user;
-  const label = user?.firstName || user?.primaryEmailAddress?.emailAddress || "Account";
+  const label = user?.firstName || user?.primaryEmailAddress?.emailAddress || "Log in";
   accountLabel.textContent = label;
   accountButton.classList.toggle("logged-in", Boolean(user));
-  accountButton.setAttribute("aria-label", user ? `Account: ${label}` : "Account");
+  accountButton.setAttribute("aria-label", user ? `Account: ${label}` : "Log in");
 }
 
 function setLocationLabel(label) {
@@ -222,7 +222,10 @@ function getProduct(id) {
 function renderProducts() {
   const normalizedQuery = searchQuery.trim().toLowerCase();
   let visibleProducts = products.filter((product) => {
-    const matchesCategory = !activeCategory || product.category === activeCategory;
+    const matchesCategory =
+      !activeCategory ||
+      product.category === activeCategory ||
+      (activeCategory === "Meat" && product.category !== "Snacks");
     const matchesSearch =
       !normalizedQuery ||
       `${product.name} ${product.category} ${product.unit}`.toLowerCase().includes(normalizedQuery);
@@ -383,12 +386,12 @@ function showToast(message) {
 }
 
 function setCategory(category) {
-  if (!products.some((product) => product.category === category)) {
+  if (category && category !== "Meat" && !products.some((product) => product.category === category)) {
     activeCategory = "";
     searchQuery = "";
     searchInput.value = "";
     renderProducts();
-    showToast("More snacks are coming soon. Showing all available cuts.");
+    showToast(`${category} products are coming soon. Showing all available items.`);
     document.querySelector("#shop").scrollIntoView({ behavior: "smooth" });
     return;
   }
@@ -495,6 +498,17 @@ document.addEventListener("keydown", (event) => {
   if (event.key === "Escape" && cartDrawer.classList.contains("open")) {
     setCartOpen(false);
   }
+  if (event.key === "Escape") {
+    document.querySelectorAll(".nav-dropdown[open]").forEach((menu) => menu.removeAttribute("open"));
+  }
+});
+
+document.addEventListener("click", (event) => {
+  document.querySelectorAll(".nav-dropdown[open]").forEach((menu) => {
+    if (!menu.contains(event.target)) {
+      menu.removeAttribute("open");
+    }
+  });
 });
 
 document.querySelector("#checkout-button").addEventListener("click", () => {
@@ -617,6 +631,7 @@ mainNav.addEventListener("click", (event) => {
   if (event.target.closest("a")) {
     mainNav.classList.remove("open");
     menuToggle.setAttribute("aria-expanded", "false");
+    mainNav.querySelectorAll(".nav-dropdown[open]").forEach((menu) => menu.removeAttribute("open"));
   }
 });
 

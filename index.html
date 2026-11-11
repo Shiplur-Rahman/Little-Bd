@@ -6,9 +6,9 @@
     <meta name="theme-color" content="#f7f7ef" />
     <meta
       name="description"
-      content="Quality goat, beef, chicken, and market snacks from Hilltop Market."
+      content="Quality goat, beef, chicken, and market snacks from AponBangla."
     />
-    <title>Hilltop Market — Good food, close to home</title>
+    <title>AponBangla — Good food, close to home</title>
     <link rel="icon" type="image/svg+xml" href="hilltop-market-icon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -42,27 +42,28 @@
           </svg>
         </button>
 
-        <a class="brand" href="#" aria-label="Hilltop Market home">
+        <a class="brand" href="#" aria-label="AponBangla home">
           <span class="brand-mark" aria-hidden="true">
             <img src="hilltop-market-icon.svg" alt="" />
           </span>
-          <span class="brand-name">hilltop<span>market</span></span>
+          <span class="brand-name">Apon<span>Bangla</span></span>
         </a>
 
         <form class="search-form" id="search-form" role="search">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <circle cx="10.8" cy="10.8" r="6.8" />
-            <path d="m16 16 4 4" />
-          </svg>
           <label class="sr-only" for="product-search">Search groceries</label>
           <input
             id="product-search"
             name="q"
             type="search"
-            placeholder="search"
+            placeholder="Search groceries and fresh food"
             autocomplete="off"
           />
-          <button type="submit">Search</button>
+          <button type="submit" aria-label="Search groceries">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="10.8" cy="10.8" r="6.8" />
+              <path d="m16 16 4 4" />
+            </svg>
+          </button>
         </form>
 
         <div class="header-actions">
@@ -80,7 +81,7 @@
               <circle cx="12" cy="8" r="3.5" />
               <path d="M5 20c.8-3.4 3.2-5.2 7-5.2s6.2 1.8 7 5.2" />
             </svg>
-            <span id="account-label">Account</span>
+            <span id="account-label">Log in</span>
           </button>
           <button class="cart-button" id="cart-open" type="button" aria-label="Open cart">
             <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -95,13 +96,48 @@
       </div>
 
       <nav class="main-nav page-shell" id="main-nav" aria-label="Main navigation">
-        <a class="nav-active" href="#shop">Shop all</a>
-        <a href="#categories" data-category-link="Goat meat">Goat</a>
-        <a href="#categories" data-category-link="Beef">Beef</a>
-        <a href="#categories" data-category-link="Chicken">Chicken</a>
-        <a href="#categories" data-category-link="Snacks">Snacks</a>
-        <a href="#weekly-picks">Butcher’s picks</a>
-        <a class="nav-highlight" href="#weekly-box">Build a meat box <span aria-hidden="true">↗</span></a>
+        <a class="nav-active" href="#">Home</a>
+        <details class="nav-dropdown" id="grocery-menu">
+          <summary>
+            Grocery
+            <svg class="dropdown-chevron" viewBox="0 0 16 16" aria-hidden="true">
+              <path d="m3 6 5 5 5-5" />
+            </svg>
+          </summary>
+          <div class="grocery-dropdown">
+            <a href="#shop" data-category-link=""><span class="dropdown-icon" aria-hidden="true">🛍️</span><span><strong>All collections</strong></span></a>
+            <a href="#shop" data-category-link="Fish"><span class="dropdown-icon" aria-hidden="true">🐟</span><span><strong>Fish</strong></span></a>
+            <a href="#shop" data-category-link="Dry fish"><span class="dropdown-icon" aria-hidden="true">🐠</span><span><strong>Dry fish</strong></span></a>
+            <a href="#shop" data-category-link="Chicken"><span class="dropdown-icon" aria-hidden="true">🍗</span><span><strong>Chicken</strong></span></a>
+            <a href="#shop" data-category-link="Beef"><span class="dropdown-icon" aria-hidden="true">🥩</span><span><strong>Beef</strong></span></a>
+            <a href="#shop" data-category-link="Goat meat"><span class="dropdown-icon" aria-hidden="true">🍖</span><span><strong>Goat</strong></span></a>
+            <a href="#shop" data-category-link="Lamb"><span class="dropdown-icon" aria-hidden="true">🐑</span><span><strong>Lamb</strong></span></a>
+            <a href="#shop" data-category-link="Duck"><span class="dropdown-icon" aria-hidden="true">🦆</span><span><strong>Duck</strong></span></a>
+            <a href="#shop" data-category-link="Oil"><span class="dropdown-icon" aria-hidden="true">🫗</span><span><strong>Oil</strong></span></a>
+            <a href="#shop" data-category-link="Fresh vegetables"><span class="dropdown-icon" aria-hidden="true">🥬</span><span><strong>Fresh vegetables</strong></span></a>
+            <a href="#shop" data-category-link="Frozen vegetables"><span class="dropdown-icon" aria-hidden="true">🫛</span><span><strong>Frozen vegetables</strong></span></a>
+            <a href="#shop" data-category-link="Spice"><span class="dropdown-icon" aria-hidden="true">🌶️</span><span><strong>Spice</strong></span></a>
+            <a href="#shop" data-category-link="Ready mix masala"><span class="dropdown-icon" aria-hidden="true">🥣</span><span><strong>Ready mix masala</strong></span></a>
+            <a href="#shop" data-category-link="Snacks"><span class="dropdown-icon" aria-hidden="true">🍿</span><span><strong>Snacks</strong></span></a>
+            <a href="#shop" data-category-link="Frozen sweets"><span class="dropdown-icon" aria-hidden="true">🍨</span><span><strong>Frozen sweets</strong></span></a>
+            <a href="#shop" data-category-link="Rice"><span class="dropdown-icon" aria-hidden="true">🍚</span><span><strong>Rice</strong></span></a>
+            <a href="#shop" data-category-link="Pickles"><span class="dropdown-icon" aria-hidden="true">🫙</span><span><strong>Pickles</strong></span></a>
+          </div>
+        </details>
+        <a href="#weekly-box">Catering</a>
+        <details class="nav-dropdown">
+          <summary>
+            About us
+            <svg class="dropdown-chevron" viewBox="0 0 16 16" aria-hidden="true">
+              <path d="m3 6 5 5 5-5" />
+            </svg>
+          </summary>
+          <div class="nav-simple-menu nav-simple-menu-right">
+            <a href="#about-us">Our story</a>
+            <a href="mailto:hello@hilltopmarket.example">Contact us</a>
+          </div>
+        </details>
+        <a href="#faq">FAQ</a>
       </nav>
     </header>
 
@@ -221,18 +257,18 @@
       </section>
     </main>
 
-    <footer class="site-footer">
+    <footer class="site-footer" id="about-us">
       <div class="page-shell footer-main">
         <div class="footer-brand-block">
           <a class="brand brand-footer" href="#">
             <span class="brand-mark" aria-hidden="true">
               <img src="hilltop-market-icon.svg" alt="" />
             </span>
-            <span class="brand-name">hilltop<span>market</span></span>
+            <span class="brand-name">Apon<span>Bangla</span></span>
           </a>
           <p>Good cuts, good neighbors, and something tasty for every table.</p>
         </div>
-        <div class="footer-column">
+        <div class="footer-column" id="faq">
           <h3>Come on in</h3>
           <a href="#shop">Shop all</a>
           <a href="#categories">Browse meat & snacks</a>
@@ -250,7 +286,7 @@
         </div>
       </div>
       <div class="footer-bottom page-shell">
-        <span>© 2026 Hilltop Market</span>
+        <span>© 2026 AponBangla</span>
         <span>Made with care for your neighborhood.</span>
       </div>
     </footer>
