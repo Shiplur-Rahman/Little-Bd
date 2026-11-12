@@ -135,11 +135,59 @@ body:not(.login-page-body) > .announcement {
   gap: 30px;
 }
 
+.order-info-bar {
+  display: flex;
+  min-height: 42px;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 9px 16px;
+  background: #b32635;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  text-align: center;
+}
+
+.order-info-message {
+  display: inline-block;
+  transform-origin: center;
+  animation: orderInfoPulse 1.6s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes orderInfoPulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.06);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .order-info-message {
+    animation: none;
+  }
+}
+
 .brand {
   display: inline-flex;
   width: fit-content;
   align-items: center;
-  gap: 8px;
+}
+
+.brand-logo {
+  display: block;
+  width: clamp(170px, 15vw, 220px);
+  height: 64px;
+  object-fit: contain;
+}
+
+.brand:not(.brand-footer) .brand-logo {
+  mix-blend-mode: multiply;
 }
 
 .brand-mark {
@@ -1205,6 +1253,13 @@ p {
   color: #e8b9b5;
 }
 
+.brand-footer .brand-logo {
+  width: 190px;
+  padding: 5px;
+  border-radius: 8px;
+  background: #fff;
+}
+
 .footer-brand-block > p {
   max-width: 230px;
   margin: 13px 0 0;
@@ -1693,6 +1748,11 @@ p {
 
   .brand {
     gap: 6px;
+  }
+
+  .brand-logo {
+    width: 142px;
+    height: 52px;
   }
 
   .brand-mark {
